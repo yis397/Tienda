@@ -50,7 +50,8 @@ if (mongoose.models.Product) {
     delete mongoose.models.Product
      Producto = mongoose.models.Product|| model('Producto', productSchema );
 }else{
-    Producto = mongoose.models.Product
+    delete mongoose.models.Producto
+    Producto = mongoose.models.Product|| model('Producto', productSchema );
 }
 export default Producto
 

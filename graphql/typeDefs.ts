@@ -7,9 +7,10 @@ const typeDefs=gql`
      nombre:String
      apellido:String
      correo: String
-     creado:String,
-     password:String,
+     creado:String
      direccion:String
+     estado:Boolean
+     carrito:[String]
  }
  input UsuarioInput{
     nombre:String!

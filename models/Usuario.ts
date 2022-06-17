@@ -29,10 +29,6 @@ const UsuarioSchema=new Schema({
         type: Boolean,
         default: true
     },
-    google: {
-        type: Boolean,
-        default: false
-    },
      comprados:{
       type:Number,
       default:0
@@ -42,9 +38,9 @@ const UsuarioSchema=new Schema({
         default:Date.now()
     },
     direccion:{
-        type:String,
-        
-    }
+        type:String,     
+    },
+    carrito: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Product' }],
 })
 
 const Usuario:Model<IUser>=mongoose.models.Usuario||model('Usuario',UsuarioSchema);

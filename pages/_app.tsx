@@ -5,14 +5,20 @@ import { lightTheme } from '../themes';
 import { ApolloProvider } from '@apollo/client';
 import apollo from '../config/apollo';
 
+import {AuthProvider} from '../context/index';
+
 function MyApp({ Component, pageProps }: AppProps) {
   
   return (
   <ThemeProvider theme={lightTheme}>
-    <ApolloProvider client={apollo}>
-
     <CssBaseline/>
+    <ApolloProvider client={apollo}>
+     <AuthProvider>
+      
          <Component  {...pageProps}/>
+      
+
+    </AuthProvider>
     </ApolloProvider>
   </ThemeProvider>)
 }

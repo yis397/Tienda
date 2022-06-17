@@ -7,6 +7,6 @@ export const getToken=(usuario:IUser,)=>{
    return jwt.sign({nombre,apellido,correo,id},process.env.SECRET||"",{expiresIn:"8h"})
 }
 export const getUsuarioJWT=(token:string)=>{
-      const usuario=  jwt.verify(token,process.env.SECRET||"");
+      const usuario=  jwt.verify((token.replace('Bearer ','')),process.env.SECRET||"");
       return usuario
 }

@@ -4,21 +4,23 @@ export interface IUser {
     apellido     : string;
     correo    : string;
     password?: string;
-    rol    : string;
-    estado:boolean;
-    google?  :boolean;
-    creado   :string;
-    direccion?:string
+    rol?    : string;
+    estado?:boolean;
+    creado ?  :string;
+    direccion?:string;
+    carrito?:string[]
 }
 export interface IProducto{
     id:string,
     nombre:string,
     cantidad:number,
     precio:number,
-    img:string,
+    img?:string,
     vendedor:string,
+    marca:string,
     tags:tags
 }
-enum tags{
-    "electronica","ropa","alimentos"
-}
+type tags=
+    |"electronica"
+    |"ropa"
+    |"alimentos"

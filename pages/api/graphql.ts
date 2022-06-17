@@ -18,9 +18,9 @@ const server=new ApolloServer({
     context:({req})=>{
         const token = req.headers['authorization'] || '';
         try {
-            const usuario=getUsuarioJWT(token);
+           // const usuario=getUsuarioJWT(token);
             return{
-                usuario
+                //usuario
             }
         } catch (error) {
         }

@@ -1,9 +1,10 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { Box,TextField,Grid,Chip,Button,Typography, Link } from '@mui/material'
 import NextLink from 'next/link';
 import { useForm } from "react-hook-form";
-import { DocumentNode, useQuery,useMutation } from '@apollo/client';
-import { M_NEWUSUARIO } from '../../interfaces/';
+import { IMsg, M_NEWUSUARIO } from '../../interfaces/';
+import { AuthContext } from '../../context';
+
 interface IData{
     nombre:string,
     apellido:string,
@@ -12,28 +13,18 @@ interface IData{
     password2:string,
 }
 export  function Register() {
+    const  {registrar}= useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm<IData>();
-    const  [error, seterror] = useState({valor:"",color:""});
-    const[nuevoUsuario]=useMutation(M_NEWUSUARIO)
-    const registrar=async({nombre,apellido,correo,password,password2}:IData)=>{
-       if (password.localeCompare(password2)!=0) {
-          seterror({valor:"contraseñas invalidas",color:"mal"})
-          return;
-       }
-       try {
-           const usuario=await nuevoUsuario({variables:{input:{nombre,apellido,correo,password}}})
-           console.log(usuario)
-           seterror({valor:"Registrado",color:"bien"})  
-       } catch (error:any) {
-        seterror({valor:error.message,color:"mal"})
-        
-       }
-
+    const  [error, seterror] = useState<IMsg>({valor:"",estado:""});
+    const registro=(datos:IData)=>{
+       const data:Promise<IMsg>=registrar(datos);
+      data.then(e=>{
+          seterror({...error,estado:e.estado,valor:e.valor})
+      })
     }
   return (
-    <Box sx={{height:"60vh",width:"50vw",background:"coral",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
-        
-        <form  noValidate onSubmit={handleSubmit(registrar)}>
+    <Box sx={{height:"60vh",width:"50vw",background:"coral",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center"}}> 
+        <form  noValidate onSubmit={handleSubmit(registro)}>
                 <Box sx={{ width: 350, padding:'10px 20px',background:"white",borderRadius:10,marginTop:10,paddingTop:5}}>
                     <Grid container spacing={2}>
                         <Typography variant='h1' component="h1" sx={{marginLeft:3}}>    Vamos.. Registrate</Typography>
@@ -42,11 +33,9 @@ export  function Register() {
                             <Chip 
                                 label={error.valor}
                                 color={
-                                    error.color=="mal"?"error":"success"
+                                    error.estado=="0"?"error":"success"
                                 }
-            
                                 className="fadeIn"
-                    
                             />
                         </Grid>:null
                         }
@@ -143,7 +132,7 @@ export  function Register() {
                                 href={ "*" } 
                                 passHref>
                                 <Link underline='always'>
-                                    ¿No tienes cuenta?
+                                    ¿Ya tienes cuenta?
                                 </Link>
                             </NextLink>
                         </Grid>

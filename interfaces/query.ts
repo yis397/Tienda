@@ -6,7 +6,6 @@ export const Q_PRODUCTOS=gql`
         id
         nombre
         precio
-
       }
     }
 `;

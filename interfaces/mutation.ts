@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 //usuario
 export const M_NEWUSUARIO=gql`
-mutation NuevoUsuario($input: UsuarioInput) {
+mutation nuevoUsuario($input: UsuarioInput) {
     nuevoUsuario(input: $input) {
         nombre
         apellido
         correo
-        password
+        
     }
   }
 `;
@@ -21,10 +21,9 @@ mutation Mutation($input: UpdateUsuario) {
 `;
 
 export const M_LOGINUSUARIO=gql`
-mutation Mutation($input: UpdateUsuario) {
-    updateUsuario(input: $input) {
-        correo
-        password
+mutation loginUsuario($input: AuthInput) {
+  loginUsuario(input: $input) {
+        token
     }
   }
 `;
