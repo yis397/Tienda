@@ -4,6 +4,7 @@ import { authReducer } from './authReducer';
 import { useMutation } from '@apollo/client';
 import { M_NEWUSUARIO, M_LOGINUSUARIO } from '../interfaces/mutation';
 import { getUsuarioJWT } from '../helpers/jwToken';
+import Cookies from 'js-cookie';
 interface AuthProps {
     registrar:(data:IRegistro)=>Promise<IMsg>,
     logins:(data:ILogin)=>Promise<IMsg>
@@ -42,8 +43,12 @@ export const AuthProvider=({children}:Prop) =>{
           try {
             const {data}=await loginUsuario({variables:{input:{correo,password}}})
             const {token}=data.loginUsuario
-            const usuario=getUsuarioJWT(token)
-            console.log(usuario)
+            getUsuarioJWT(token,1).then(e=>{
+
+                console.log(e);
+            })
+            
+            //Cookies.set('token',token)
             return {estado:'1',valor:'Buena compra'}as IMsg
           } catch (error:any) {
             return {estado:'0',valor:error.message}as IMsg

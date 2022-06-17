@@ -15,7 +15,9 @@ export const Login=()=> {
     const registrar=async(datos:ILogin)=>{
            //seterror()
            const data:Promise<IMsg>=logins(datos)
-           
+           data.then(e=>{
+            seterror({...error,valor:e.valor,estado:e.estado})
+           })
 
     }
   return (
