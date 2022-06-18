@@ -18,7 +18,8 @@ export interface IProducto{
     img?:string,
     vendedor:string,
     marca:string,
-    tags:tags
+    tags:tags,
+    slug:string,
 }
 type tags=
     |"electronica"

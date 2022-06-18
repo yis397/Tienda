@@ -5,20 +5,23 @@ import { useForm } from 'react-hook-form';
 import { ILogin ,IMsg, M_LOGINUSUARIO} from '../../interfaces';
 
 import { AuthContext } from '../../context';
+import { useRouter } from 'next/router';
 
 
 
 export const Login=()=> {
     const { register, handleSubmit, formState: { errors } } = useForm<ILogin>();
     const {logins} = useContext(AuthContext);
+    const ruta=useRouter()
     const  [error, seterror] = useState<IMsg>({valor:"",estado:""});
     const registrar=async(datos:ILogin)=>{
-           //seterror()
            const data:Promise<IMsg>=logins(datos)
            data.then(e=>{
             seterror({...error,valor:e.valor,estado:e.estado})
            })
-
+           setTimeout(() => {
+            ruta.push('/')
+           }, 1000);
     }
   return (
     <Box sx={{height:"60vh",width:"50vw",background:"coral",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -28,13 +31,17 @@ export const Login=()=> {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant='h1' component="h1">Iniciar Sesión</Typography>
+                            {
+                            error.valor.length!=0?<Grid item xs={12}>
                             <Chip 
-                                label="No reconocemos ese usuario / contraseña"
-                                color="error"
-            
+                                label={error.valor}
+                                color={
+                                    error.estado=="0"?"error":"success"
+                                }
                                 className="fadeIn"
-                    
                             />
+                        </Grid>:null
+                        }
                         </Grid>
 
                         <Grid item xs={12}>
@@ -79,7 +86,7 @@ export const Login=()=> {
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
                             <NextLink 
-                                href={ "*" } 
+                                href={ "/auth/register" } 
                                 passHref>
                                 <Link underline='always'>
                                     ¿No tienes cuenta?

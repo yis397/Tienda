@@ -6,6 +6,8 @@ import { M_NEWUSUARIO, M_LOGINUSUARIO } from '../interfaces/mutation';
 import { getUsuarioJWT } from '../helpers/jwToken';
 import Cookies from 'js-cookie';
 interface AuthProps {
+    isLoggedIn: boolean;
+    user?: IUser;
     registrar:(data:IRegistro)=>Promise<IMsg>,
     logins:(data:ILogin)=>Promise<IMsg>
 }
@@ -31,7 +33,6 @@ export const AuthProvider=({children}:Prop) =>{
                 
                const {data}=await nuevoUsuario({variables:{input:{nombre,apellido,correo,password}}})
                const {...us}=data.nuevoUsuario
-               //dispatch({type:"Login",payload:data.nuevoUsuario})
                return {estado:'1',valor:'EXCELENTE'}as IMsg
             } catch (error:any) {
                 return {estado:'0',valor:error.message}as IMsg
@@ -43,13 +44,14 @@ export const AuthProvider=({children}:Prop) =>{
           try {
             const {data}=await loginUsuario({variables:{input:{correo,password}}})
             const {token}=data.loginUsuario
-            getUsuarioJWT(token,1).then(e=>{
-
-                console.log(e);
-            })
             
-            //Cookies.set('token',token)
-            return {estado:'1',valor:'Buena compra'}as IMsg
+              const usuario:any=await getUsuarioJWT(token,1)
+              if (usuario.id) {
+                  dispatch({type:"Login",payload:usuario})
+                  Cookies.set('token',token)
+                }
+                console.log(state.isLoggedIn)
+                return {estado:'1',valor:'Buena compra'}as IMsg
           } catch (error:any) {
             return {estado:'0',valor:error.message}as IMsg
           }
@@ -58,6 +60,7 @@ export const AuthProvider=({children}:Prop) =>{
     return (
         <AuthContext.Provider
         value={{
+            ...state,
             registrar,
             logins
         }}>

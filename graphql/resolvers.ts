@@ -73,15 +73,28 @@ const resolvers={
 
         },
         updateUsuario:async(_:any,{input}:any,ctx:Prop)=>{
+           
             const newUsuario=await Usuario.findOneAndUpdate({_id:ctx.usuario.id},input,{new:true})
             return newUsuario
         },
         //Productos
-        nuevoProducto:async(_:any,{input}:any,ctx:Prop)=>{
-          
-            const producto=await new Producto({...input,vendedor:ctx.usuario.id})
-            producto.save();
-            return producto
+        nuevoProducto:(_:any,{input}:any,ctx:Prop)=>{
+     
+        const {id}=ctx.usuario
+            
+            if (!id)throw new Error('error en usuario')
+
+             try {
+             const {nombre,marca}=input;
+             const slug=nombre.replace(' ','_')+'_'+marca;
+
+             const producto= new Producto({...input,slug,vendedor:id})
+             producto.save();
+             return producto
+             } catch (error) {
+                 console.log("nop");
+             }
+      
         },
         updateProducto:async(_:any,{id,input}:any)=>{
           let producto=await Producto.findById(id)

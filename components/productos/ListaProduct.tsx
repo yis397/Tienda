@@ -1,9 +1,12 @@
 import { Box, Grid } from '@mui/material'
+import { IProducto } from '../../interfaces';
 
 import CardProduct from './CardProduct';
 
-
-export const ProductList=()=> {
+interface Prop{
+  product:any[]
+}
+export const ProductList=({product}:Prop)=> {
 
   return (
     <Box sx={{width:"95vw",
@@ -15,9 +18,9 @@ export const ProductList=()=> {
 
     <Grid container spacing={4}>
         {
-            [1,2,3,4,5,6,7,8].map(e=> (
+           (product.length!=0?product:[1,2]).map((e,i)=> (
                 <CardProduct 
-                    key={ e }   
+                    key={i}  
                 />
             ))
         }

@@ -8,7 +8,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Typography from '@mui/material/Typography';
 import { IconButton, Link } from '@mui/material';
 import NextLink from 'next/link';
-const CardProduct=()=> {
+interface Prop{
+  key:number
+}
+const CardProduct=({key}:Prop)=> {
   return  (
     <Card sx={{ maxWidth: 300,maxHeight:500,marginLeft:1,marginTop:10}}>
   
@@ -32,7 +35,7 @@ const CardProduct=()=> {
   
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {key}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Lizards are a widespread group of squamate reptiles, with over 6,000

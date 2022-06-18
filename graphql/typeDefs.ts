@@ -39,7 +39,8 @@ input UpdateUsuario{
     img:String,
     vendedor:String,
     marca:String,
-    tags:[Tags]
+    tags:[Tags],
+    slug:String
  }
   enum Tags{
    

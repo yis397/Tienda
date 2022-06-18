@@ -6,8 +6,8 @@ import resolvers from "../../graphql/resolvers";
 import { getUsuarioJWT } from '../../helpers/jwToken';
 import Cors from 'micro-cors'
 
-const cors=Cors();
 dotenv.config()
+const cors=Cors();
 
 conectarDB();
 
@@ -15,12 +15,12 @@ conectarDB();
 const server=new ApolloServer({
     typeDefs,
     resolvers,
-    context:({req})=>{
+    context:async({req})=>{
         const token = req.headers['authorization'] || '';
         try {
-           // const usuario=getUsuarioJWT(token);
+           const usuario=await getUsuarioJWT(token,2);
             return{
-                //usuario
+                usuario
             }
         } catch (error) {
         }

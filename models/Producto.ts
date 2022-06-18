@@ -32,6 +32,10 @@ const productSchema = new Schema({
         type:String,
         required:[true,"Marca requerido"]
     },
+    slug:{
+        type:String,
+        required:[true,"Slug requerido"]
+    },
     tags:{
         type: String,
         enum: {

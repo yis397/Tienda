@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useContext,useEffect}from 'react'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -6,18 +6,19 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
-import {InputBase,Menu,MenuItem} from '@mui/material';
+import {InputBase,Menu,MenuItem,Box} from '@mui/material';
+import { AuthContext } from '../../context';
+import { fontSize } from '@mui/system';
 
 
 
 const Navbar=()=> {
-  const [auth, setAuth] = React.useState(true);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-
+  const {isLoggedIn,user} = useContext(AuthContext);
   const handleClose = () => {
     setAnchorEl(null);
-  };7
+  };
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,16 +46,30 @@ const Navbar=()=> {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Registrate</MenuItem>
-                <MenuItem onClick={handleClose}>Inciar Secion</MenuItem>
-                <MenuItem onClick={handleClose}>Cerrar Secion</MenuItem>
-                <MenuItem onClick={handleClose}>My Direccion</MenuItem>
-                <MenuItem onClick={handleClose}>Favoritos</MenuItem>
+                
+                
+                
+                {
+                  isLoggedIn?
+                  <Box>
+                    <MenuItem onClick={handleClose}>Cerrar Secion</MenuItem><MenuItem onClick={handleClose}>My Direccion</MenuItem>
+                    <MenuItem onClick={handleClose}>Favoritos</MenuItem>
+
+                  </Box>
+                  :<Box>
+                    <MenuItem onClick={handleClose}>Registrate</MenuItem>
+                    <MenuItem onClick={handleClose}>Inciar Secion</MenuItem>
+                  </Box>
+                }
+                
               </Menu>
 
     </div>
 
-
+     
+     {
+      isLoggedIn?<Typography>Hola:{user?.nombre}</Typography>:null
+     }
     <InputBase
         sx={{ ml: 1, flex: 1,backgroundColor:"white",borderRadius:30,paddingLeft:5}}
         placeholder="Search Google Maps"
