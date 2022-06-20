@@ -7,7 +7,6 @@ import { useQuery } from '@apollo/client';
 
 const Home: NextPage = () => {
   const {data,loading}=useQuery(Q_PRODUCTOS)
-
   
   return (
     <HomeLayout titulo='Tienda-Home' descripcion='una pagina para comprar muchas cosas'>

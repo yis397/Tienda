@@ -1,15 +1,17 @@
 import React, { createContext ,useReducer,FC} from 'react';
-import { IUser,IRegistro, IMsg, ILogin } from '../interfaces';
+import { IUser,IRegistro, IMsg, ILogin, Q_SLUGS } from '../interfaces';
 import { authReducer } from './authReducer';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { M_NEWUSUARIO, M_LOGINUSUARIO } from '../interfaces/mutation';
 import { getUsuarioJWT } from '../helpers/jwToken';
 import Cookies from 'js-cookie';
+
 interface AuthProps {
     isLoggedIn: boolean;
     user?: IUser;
     registrar:(data:IRegistro)=>Promise<IMsg>,
-    logins:(data:ILogin)=>Promise<IMsg>
+    logins:(data:ILogin)=>Promise<IMsg>,
+    slugs:()=>any
 }
 export interface AuthState {
     isLoggedIn: boolean;
@@ -27,6 +29,7 @@ export const AuthProvider=({children}:Prop) =>{
     const [state, dispatch] = useReducer(authReducer,INICIAL);
     const [nuevoUsuario]=useMutation(M_NEWUSUARIO)
     const [loginUsuario]=useMutation(M_LOGINUSUARIO)
+    
      const registrar=async({nombre,correo,apellido,password,password2}:IRegistro)=>{
         if (password==password2) {
             try {
@@ -56,13 +59,20 @@ export const AuthProvider=({children}:Prop) =>{
             return {estado:'0',valor:error.message}as IMsg
           }
      }
+     const slugs=async()=>{
+        const {data,loading}=useQuery(Q_SLUGS)
+        const lista:any=await data.getProducSlug;
+
+        return lista
+     }
+     
 
     return (
         <AuthContext.Provider
         value={{
             ...state,
             registrar,
-            logins
+            logins,slugs
         }}>
         {children}
         </AuthContext.Provider>

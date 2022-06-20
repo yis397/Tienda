@@ -5,6 +5,7 @@ import { IUser } from '../interfaces';
 import { getToken } from '../helpers/jwToken';
 import Producto from '../models/Producto';
 
+
 interface Prop{
     usuario:IUser
 }
@@ -29,8 +30,22 @@ const resolvers={
             if (!existProducto) throw new Error("erro en get Producto");
             return existProducto;
             
-        }
+        },
+        getProducSlug:async()=>{
+            
+            const slugs = await Producto.find().select('slug -_id').lean();
+          
+        
+            return slugs;
+        },
+        getProductBySlug:async(_:any,{slug}:any)=>{
+            console.log(slug);
+          const product=await Producto.findOne({slug}).lean()
+          if(!product)return null
 
+          return JSON.parse(JSON.stringify(product));
+        }
+        
 
     },
 

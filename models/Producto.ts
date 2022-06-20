@@ -42,6 +42,10 @@ const productSchema = new Schema({
             values: ['electronica','ropa','alimentos'],
             message: '{VALUE} no es un tipo válido'
         }
+    },
+    descripcion:{
+        type: String,
+        required:[true,"descripcion requerido"]
     }
 
 });

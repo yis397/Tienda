@@ -11,7 +11,7 @@ export interface IUser {
     carrito?:string[]
 }
 export interface IProducto{
-    id:string,
+    _id:string,
     nombre:string,
     cantidad:number,
     precio:number,

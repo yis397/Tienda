@@ -32,14 +32,14 @@ input UpdateUsuario{
  }
 """Producto"""
  type Producto{
-    id:ID,
+    _id:ID,
     nombre:String,
     cantidad:Int,
     precio:Float,
     img:String,
     vendedor:String,
     marca:String,
-    tags:[Tags],
+    tags:Tags,
     slug:String
  }
   enum Tags{
@@ -53,7 +53,11 @@ input UpdateUsuario{
     marca:String!,
     tags:Tags!,
     img:String,
+    descripcion:String!
  } 
+ type Slug{
+    slug:String
+ }
   type Query{
       getUsuarioToken(token:String):Usuario
       
@@ -61,6 +65,8 @@ input UpdateUsuario{
       #productos
       getProductos:[Producto]
       getProducto(id:ID!):Producto
+      getProductBySlug(slug:String):Producto
+      getProducSlug:[Slug]
   }
   type Mutation{
       """usuario"""
